@@ -2,6 +2,8 @@
 
 import contextlib
 
+import torch
+
 from ultralytics.utils import LOGGER, SETTINGS, TESTS_RUNNING, colorstr
 
 try:
@@ -83,6 +85,8 @@ def on_train_start(trainer):
     """Log TensorBoard graph."""
     if WRITER:
         _log_tensorboard_graph(trainer)
+        if trainer.device.type == "cuda":
+            torch.cuda.empty_cache()
 
 
 def on_train_epoch_end(trainer):
